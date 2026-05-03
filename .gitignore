@@ -1,0 +1,47 @@
+# Environment (never commit secrets)
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Dependencies
+node_modules/
+
+# Next.js
+frontend/.next/
+frontend/out/
+.next/
+out/
+
+# Build / caches
+dist/
+build/
+.cache/
+*.tsbuildinfo
+
+# Logs & runtime
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Tests & coverage
+coverage/
+.nyc_output/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/extensions.json
+
+# Docker (optional local overrides)
+docker-compose.override.yml
+
+# Misc
+*.local
