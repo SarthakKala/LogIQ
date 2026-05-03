@@ -13,10 +13,11 @@ type LogRow = {
 
 const WS_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:4001';
 
+/** Level colors on dark panel — palette + readable accents */
 const levelColor: Record<string, string> = {
-  INFO: '#3ECF8E',
-  WARN: '#F59E0B',
-  ERROR: '#EF4444',
+  INFO: '#C7B7A3',
+  WARN: '#E8D8C4',
+  ERROR: '#F5C2C2',
 };
 
 function formatLine(row: LogRow): string {
@@ -61,13 +62,13 @@ export default function LogStream() {
   }, [lines]);
 
   return (
-    <section className="rounded-lg border border-[#1a1a1a] bg-[#111111] p-4">
-      <h2 className="mb-3 text-sm font-medium uppercase tracking-wide text-neutral-400">
+    <section className="rounded-lg border border-[#6D2932] bg-[#561C24] p-4 text-[#E8D8C4] shadow-md">
+      <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[#C7B7A3]">
         Live logs
       </h2>
-      <div className="max-h-[420px] overflow-y-auto rounded border border-[#1a1a1a] bg-black/40 p-3 font-mono text-xs leading-relaxed">
+      <div className="max-h-[420px] overflow-y-auto rounded border border-[#6D2932] bg-[#6D2932] p-3 font-mono text-sm leading-relaxed">
         {lines.length === 0 ? (
-          <p className="text-neutral-600">
+          <p className="text-[#C7B7A3]">
             Waiting for events… (collector WebSocket on :4001)
           </p>
         ) : (
@@ -75,7 +76,7 @@ export default function LogStream() {
             <div
               key={`${row.id ?? i}-${row.timestamp ?? ''}-${i}`}
               style={{
-                color: levelColor[row.level ?? ''] ?? '#94a3b8',
+                color: levelColor[row.level ?? ''] ?? '#E8D8C4',
               }}
             >
               {formatLine(row)}

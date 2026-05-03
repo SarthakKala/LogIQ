@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * UI palette (user-provided)
+ * #561C24  #6D2932  #C7B7A3  #E8D8C4
+ */
+:root {
+  --logiq-deep: #561c24;
+  --logiq-mid: #6d2932;
+  --logiq-taupe: #c7b7a3;
+  --logiq-cream: #e8d8c4;
+}
