@@ -1,6 +1,5 @@
-name: logiq
+# Postgres runs on Supabase — local Redis only (build guide: anomaly latency windows).
 services:
-  # PostgreSQL is hosted on Supabase — only Redis runs locally for anomaly latency windows.
   redis:
     image: redis:7
     ports:
