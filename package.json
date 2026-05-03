@@ -7,10 +7,14 @@
     "stage1": "node scripts/stage1-smoke.js",
     "start:collector": "node collector/index.js",
     "start:services": "concurrently \"node services/auth-service/index.js\" \"node services/payment-service/index.js\" \"node services/fraud-service/index.js\" \"node services/notification-service/index.js\"",
-    "start:frontend": "cd frontend && npm run dev"
+    "start:frontend": "cd frontend && npm run dev",
+    "start:all": "concurrently \"npm run start:collector\" \"npm run start:services\" \"npm run start:frontend\"",
+    "test": "jest --runInBand"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
   },
   "dependencies": {
     "cors": "^2.8.5",

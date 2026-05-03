@@ -33,7 +33,7 @@ function formatLine(row: LogRow): string {
 
 export default function LogStream() {
   const [lines, setLines] = useState<LogRow[]>([]);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const ws = new WebSocket(WS_URL);
@@ -57,8 +57,10 @@ export default function LogStream() {
     };
   }, []);
 
+  /** Scroll only the log panel — avoid scrollIntoView (it pulls the whole page). */
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
   }, [lines]);
 
   return (
@@ -66,7 +68,10 @@ export default function LogStream() {
       <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-[#C7B7A3]">
         Live logs
       </h2>
-      <div className="max-h-[420px] overflow-y-auto rounded border border-[#6D2932] bg-[#6D2932] p-3 font-mono text-sm leading-relaxed">
+      <div
+        ref={scrollRef}
+        className="logiq-scroll max-h-[420px] overflow-y-auto overflow-x-hidden rounded border border-[#6D2932] bg-[#6D2932] p-3 font-mono text-sm leading-relaxed overscroll-contain"
+      >
         {lines.length === 0 ? (
           <p className="text-[#C7B7A3]">
             Waiting for events… (collector WebSocket on :4001)
@@ -83,7 +88,6 @@ export default function LogStream() {
             </div>
           ))
         )}
-        <div ref={bottomRef} />
       </div>
     </section>
   );

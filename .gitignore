@@ -30,6 +30,9 @@ yarn-error.log*
 # Tests & coverage
 coverage/
 .nyc_output/
+tests/.jest-completed-file-count
+tests/.jest-process-debug.log
+tests/.jest-teardown-debug.log
 
 # OS
 .DS_Store

@@ -1,0 +1,76 @@
+﻿node.exe : PASS tests/collector.integration.test.js (7.49 s)
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (PASS tests/coll...est.js (7.49 s):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+PASS tests/metricsEngine.test.js (5.096 s)
+PASS tests/anomalyDetector.test.js
+
+Test Suites: 3 passed, 3 total
+Tests:       13 passed, 13 total
+Snapshots:   0 total
+Time:        15.205 s
+Ran all test suites.
+
+Jest has detected the following 3 open handles potentially keeping Jest from exiting:
+
+  ΓùÅ  TCPWRAP
+
+      38 | async function migrate() {
+      39 |   for (const sql of STATEMENTS) {
+    > 40 |     await pool.query(sql);
+         |                ^
+      41 |   }
+      42 | }
+      43 |
+
+      at Connection.connect (node_modules/pg/lib/connection.js:42:17)
+      at Client._connect (node_modules/pg/lib/client.js:161:11)
+      at Client.connect (node_modules/pg/lib/client.js:210:12)
+      at BoundPool.newClient (node_modules/pg-pool/index.js:266:12)
+      at BoundPool.connect (node_modules/pg-pool/index.js:235:10)
+      at BoundPool.query (node_modules/pg-pool/index.js:449:10)
+      at query (collector/db/migrate.js:40:16)
+      at migrate (collector/createApp.js:35:9)
+      at Object.buildApp (tests/collector.integration.test.js:10:17)
+
+
+  ΓùÅ  TCPWRAP
+
+      1 | const Redis = require('ioredis');
+    > 2 | const redis = new Redis(process.env.REDIS_URL);
+        |               ^
+      3 | module.exports = redis;
+      4 |
+
+      at node_modules/ioredis/built/connectors/StandaloneConnector.js:44:21
+      at StandaloneConnector.connect (node_modules/ioredis/built/connectors/StandaloneConnector.js:43:16)
+      at node_modules/ioredis/built/Redis.js:122:64
+      at EventEmitter.connect (node_modules/ioredis/built/Redis.js:104:25)
+      at new Redis (node_modules/ioredis/built/Redis.js:77:18)
+      at Object.<anonymous> (collector/db/redis.js:2:15)
+      at Object.require (collector/createApp.js:5:15)
+      at Object.require (tests/collector.integration.test.js:3:22)
+
+
+  ΓùÅ  TCPWRAP
+
+      4 |
+      5 | async function insertLog(row) {
+    > 6 |   await pool.query(
+        |              ^
+      7 |     `INSERT INTO logs (
+      8 |       trace_id, journey_id, span_id, parent_span_id, service,
+      9 |       level, message, latency_ms, timestamp, metadata
+
+      at Connection.connect (node_modules/pg/lib/connection.js:42:17)
+      at Client._connect (node_modules/pg/lib/client.js:161:11)
+      at Client.connect (node_modules/pg/lib/client.js:210:12)
+      at BoundPool.newClient (node_modules/pg-pool/index.js:266:12)
+      at BoundPool.connect (node_modules/pg-pool/index.js:235:10)
+      at BoundPool.query (node_modules/pg-pool/index.js:449:10)
+      at query (tests/metricsEngine.test.js:6:14)
+      at Object.insertLog (tests/metricsEngine.test.js:32:11)
+

@@ -11,4 +11,43 @@
   --logiq-mid: #6d2932;
   --logiq-taupe: #c7b7a3;
   --logiq-cream: #e8d8c4;
+  /* Scrollbars: thumb then track (Firefox scrollbar-color order) */
+  --logiq-scroll-thumb: rgba(199, 183, 163, 0.32);
+  --logiq-scroll-thumb-hover: rgba(199, 183, 163, 0.5);
+  --logiq-scroll-track: rgba(45, 18, 24, 0.55);
+}
+
+/**
+ * Thin, low-contrast scrollbars for dark panels (chat thread, live logs, tables).
+ * Firefox + WebKit; falls back to UA defaults where unsupported.
+ */
+.logiq-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--logiq-scroll-thumb) var(--logiq-scroll-track);
+}
+
+.logiq-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.logiq-scroll::-webkit-scrollbar-track {
+  background: var(--logiq-scroll-track);
+  border-radius: 100px;
+  margin: 4px 0;
+}
+
+.logiq-scroll::-webkit-scrollbar-thumb {
+  background: var(--logiq-scroll-thumb);
+  border-radius: 100px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+}
+
+.logiq-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--logiq-scroll-thumb-hover);
+}
+
+.logiq-scroll::-webkit-scrollbar-corner {
+  background: transparent;
 }
