@@ -2,6 +2,7 @@ const path = require('path');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const express = require('express');
+const cors = require('cors');
 
 const pool = require('./db/postgres');
 const redis = require('./db/redis');
@@ -9,16 +10,20 @@ const { migrate } = require('./db/migrate');
 const LogStore = require('./classes/LogStore');
 const AnomalyDetector = require('./classes/AnomalyDetector');
 const MetricsEngine = require('./classes/MetricsEngine');
-const { broadcast } = require('./websocket');
+const { createLlm } = require('./llm');
+const { broadcast, startWebSocketServer } = require('./websocket');
 
 const app = express();
+app.use(cors({ origin: true }));
 app.use(express.json());
 
 const logStore = new LogStore(pool);
 const anomalyDetector = new AnomalyDetector(redis, pool);
 const metricsEngine = new MetricsEngine(pool);
+const llm = createLlm({ logStore, metricsEngine, redis });
 
 const PORT = Number(process.env.COLLECTOR_PORT) || 4000;
+const WS_PORT = Number(process.env.COLLECTOR_WS_PORT) || 4001;
 
 function normalizeIngestBody(body) {
   return {
@@ -124,10 +129,18 @@ app.get('/anomalies', async (req, res) => {
   }
 });
 
-app.post('/ask', (req, res) => {
-  res.status(501).json({
-    error: 'POST /ask is implemented in Stage 4 (LLM).',
-  });
+app.post('/ask', async (req, res) => {
+  const { question } = req.body || {};
+  if (!question || typeof question !== 'string' || !question.trim()) {
+    return res.status(400).json({ error: 'question is required' });
+  }
+  try {
+    const answer = await llm.answer(question.trim());
+    return res.json({ answer });
+  } catch (err) {
+    console.error('POST /ask', err);
+    return res.status(500).json({ error: err.message || 'Ask failed' });
+  }
 });
 
 app.get('/health', async (req, res) => {
@@ -154,6 +167,7 @@ app.get('/health', async (req, res) => {
 
 async function main() {
   await migrate();
+  startWebSocketServer(WS_PORT);
   app.listen(PORT, () => {
     console.log(`LogIQ collector listening on http://localhost:${PORT}`);
   });

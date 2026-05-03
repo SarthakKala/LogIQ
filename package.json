@@ -6,15 +6,18 @@
     "infra:down": "docker-compose down",
     "stage1": "node scripts/stage1-smoke.js",
     "start:collector": "node collector/index.js",
-    "start:services": "concurrently \"node services/auth-service/index.js\" \"node services/payment-service/index.js\" \"node services/fraud-service/index.js\" \"node services/notification-service/index.js\""
+    "start:services": "concurrently \"node services/auth-service/index.js\" \"node services/payment-service/index.js\" \"node services/fraud-service/index.js\" \"node services/notification-service/index.js\"",
+    "start:frontend": "cd frontend && npm run dev"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
   },
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.0",
     "dotenv": "^16.4.5",
     "ioredis": "^5.4.1",
-    "pg": "^8.13.0"
+    "pg": "^8.13.0",
+    "ws": "^8.18.0"
   }
 }
